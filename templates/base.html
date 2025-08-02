@@ -13,7 +13,7 @@
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav ms-auto">
                 {% if user.is_authenticated %}
-                    <li class="nav-item"><a class="nav-link" href="#">Profile</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'profile-details' %}">Profile</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Logout</a></li>
                 {% else %}
                     <li class="nav-item"><a class="nav-link" href="#">Login</a></li>
