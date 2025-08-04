@@ -6,7 +6,8 @@ from field_target.accounts.models import UserProfile
 
 class Competition(models.Model):
     name = models.CharField(max_length=100)
-    date = models.DateField()
+    start_date = models.DateField()
+    end_date = models.DateField()
     location = models.CharField(max_length=200)
     description = models.TextField()
 

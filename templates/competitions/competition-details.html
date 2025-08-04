@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">{{ competition.name }}</h2>
+            <small>{{ competition.start_date }} — {{ competition.end_date }}</small>
+        </div>
+        <div class="card-body">
+            <p><strong>Location:</strong> {{ competition.location }}</p>
+            <p><strong>Description:</strong></p>
+            <p>{{ competition.description }}</p>
+
+            <hr>
+
+            <h4>Registered Competitors {{ competitors.count }}</h4>
+
+            {% if competitors %}
+                <div class="table-responsive">
+                    <table class="table table-striped align-middle">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>#</th>
+                                <th>Username</th>
+                                <th>Shooter Class</th>
+                                <th>Rifle</th>
+                                <th>Rifle</th>
+                                <th>Scope</th>
+                                <th>Pellets</th>
+                                <th>Hotel</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for reg in competitors %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ reg.shooter.user.username }}</td>
+                                <td>{{ reg.shooter.shooter_class }}</td>
+                                <td>{{ reg.shooter.rifle }}</td>
+                                <td>{{ reg.shooter.scope }}</td>
+                                <td>{{ reg.shooter.pellets }}</td>
+                                <td>{{ reg.shooter.country }}</td>
+                                <td>{{ reg.accommodation }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+            {% else %}
+                <p>No competitors registered yet.</p>
+            {% endif %}
+        </div>
+    </div>
+    <div>
+            {% if user.is_authenticated and not is_registered%}
+                <a href="{% url 'competition-register' competition.pk %}" class="btn btn-success mb-3">Register</a>
+            {% endif %}
+        </div>
+</div>
+    <a href="{% url 'all-competitions' %}">Back to competitions list</a>
+{% endblock %}
