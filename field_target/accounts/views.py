@@ -1,18 +1,15 @@
-
-
-from django.contrib.auth import login, get_user, logout
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
-from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
+from django.contrib.auth import login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LogoutView, LoginView
 from django.views import View
-from django.views.generic import DetailView, DeleteView
-
+from django.views.generic import  DeleteView
 from field_target.accounts.forms import UserRegisterForm, ProfileForm, UserEditForm
 from field_target.accounts.models import UserProfile
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 
 
-# Create your views here.
+
 class UserRegisterView(View):
     def get(self, request):
         user_form = UserRegisterForm()
@@ -32,37 +29,38 @@ class UserRegisterView(View):
         }
 
         if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save(commit=False)
-            user.set_password(user.password)
-            user.save()
+            user = user_form.save()
 
             profile = profile_form.save(commit=False)
             profile.user = user
             profile.save()
 
             login(request, user)
-            return redirect('home')  # or wherever you'd like to go
+            return redirect('home')
 
         return render(request, 'accounts/register.html', context)
 
-class ProfileDetailsView(View):
+class CustomLogoutView(LogoutView):
+    success_url = reverse_lazy('home')
+
+class CustomLoginView(LoginView):
+    template_name = 'accounts/login.html'
+    success_url = reverse_lazy('home')
+
+class ProfileDetailsView(LoginRequiredMixin, View):
     model = UserProfile
     template_name = 'accounts/profile-details.html'
 
 
     def get(self, request):
         profile = UserProfile.objects.get(user=request.user)
-        return render(request, 'accounts/profile-details.html', {'profile': profile})
+        context = {
+            'profile': profile
+        }
+        return render(request, 'accounts/profile-details.html', context)
 
 
-
-from django.views import View
-from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
-from .models import UserProfile
-from .forms import ProfileForm, UserEditForm
-
-class ProfileEditView(View):
+class ProfileEditView(LoginRequiredMixin, View):
     template_name = 'accounts/profile-edit.html'
     success_url = reverse_lazy('profile-details')
 
@@ -90,7 +88,7 @@ class ProfileEditView(View):
         }
         return render(request, self.template_name, context)
 
-class ProfileDeleteView(DeleteView):
+class ProfileDeleteView(LoginRequiredMixin, DeleteView):
     model = UserProfile
     template_name = 'accounts/profile-delete.html'
     success_url = reverse_lazy('home')

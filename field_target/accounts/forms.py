@@ -4,18 +4,6 @@ from django.core.exceptions import ValidationError
 
 from .models import UserProfile
 
-# class UserRegisterForm(forms.ModelForm):
-#     password = forms.CharField(widget=forms.PasswordInput)
-#
-#     class Meta:
-#         model = User
-#         fields = ['username', 'email', 'password']
-#
-# class UserProfileForm(forms.ModelForm):
-#     class Meta:
-#         model = UserProfile
-#         fields = ['shooter_class', 'rifle', 'scope', 'pellets', 'country']
-
 class UserRegisterForm(forms.ModelForm):
     password1 = forms.CharField(
         label='Password',
