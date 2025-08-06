@@ -1,6 +1,7 @@
 from django.contrib.auth import login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LogoutView, LoginView
+from django.http import Http404
 from django.views import View
 from django.views.generic import  DeleteView
 from field_target.accounts.forms import UserRegisterForm, ProfileForm, UserEditForm
@@ -53,11 +54,21 @@ class ProfileDetailsView(LoginRequiredMixin, View):
 
 
     def get(self, request):
-        profile = UserProfile.objects.get(user=request.user)
+        try:
+            profile = request.user.userprofile
+        except UserProfile.DoesNotExist:
+            raise Http404("No UserProfile found for this user.")
+
         context = {
             'profile': profile
         }
-        return render(request, 'accounts/profile-details.html', context)
+        return render(request, self.template_name, context)
+
+    def get_object(self, queryset=None):
+        try:
+            return self.request.user.userprofile
+        except UserProfile.DoesNotExist:
+            raise Http404("No UserProfile found for this user.")
 
 
 class ProfileEditView(LoginRequiredMixin, View):

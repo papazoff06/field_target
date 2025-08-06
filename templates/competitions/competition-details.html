@@ -11,6 +11,18 @@
             <p><strong>Location:</strong> {{ competition.location }}</p>
             <p><strong>Description:</strong></p>
             <p>{{ competition.description }}</p>
+            
+        {% if competition.sponsor_set.exists %}
+    <hr>
+    <h5 class="mt-4">Sponsored by:</h5>
+    <div class="d-flex flex-wrap gap-3">
+        {% for sponsor in competition.sponsor_set.all %}
+            <a href="{{ sponsor.website }}" target="_blank" class="p-2 bg-light border rounded shadow-sm text-center">
+                <img src="{{ sponsor.logo.url }}" alt="{{ sponsor.name }}" style="height: 60px;">
+            </a>
+        {% endfor %}
+    </div>
+{% endif %}
 
             <hr>
 
@@ -22,7 +34,7 @@
                         <thead class="table-dark">
                             <tr>
                                 <th>#</th>
-                                <th>Username</th>
+                                <th>Name</th>
                                 <th>Shooter Class</th>
                                 <th>Rifle</th>
                                 <th>Rifle</th>
@@ -35,7 +47,7 @@
                             {% for reg in competitors %}
                             <tr>
                                 <td>{{ forloop.counter }}</td>
-                                <td>{{ reg.shooter.user.username }}</td>
+                                <td>{{ reg.shooter.user.get_full_name }}</td>
                                 <td>{{ reg.shooter.shooter_class }}</td>
                                 <td>{{ reg.shooter.rifle }}</td>
                                 <td>{{ reg.shooter.scope }}</td>
@@ -53,11 +65,29 @@
             {% endif %}
         </div>
     </div>
-    <div>
-            {% if user.is_authenticated and not is_registered%}
-                <a href="{% url 'competition-register' competition.pk %}" class="btn btn-success mb-3">Register</a>
-            {% endif %}
-        </div>
+    <div class="d-flex justify-content-between align-items-center mt-4 flex-wrap gap-2">
+    <!-- Back Button -->
+    <a href="{% url 'all-competitions' %}" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left-circle"></i> Back to Competitions
+    </a>
+
+    <div class="ms-auto d-flex gap-2 flex-wrap">
+        {% if user.is_authenticated and not is_registered %}
+            <!-- Register Button -->
+            <a href="{% url 'competition-register' competition.pk %}" class="btn btn-success">
+                <i class="bi bi-check2-circle"></i> Register
+            </a>
+        {% endif %}
+
+        {% if user.is_superuser or user.is_staff %}
+            <!-- Edit Button -->
+            <a href="{% url 'competition-edit' competition.pk %}" class="btn btn-warning">
+                <i class="bi bi-pencil-square"></i> Edit
+            </a>
+        {% endif %}
+    </div>
 </div>
-    <a href="{% url 'all-competitions' %}">Back to competitions list</a>
+
+</div>
+
 {% endblock %}

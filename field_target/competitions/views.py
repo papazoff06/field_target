@@ -1,24 +1,38 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView, DetailView
+from django.utils import timezone
+from django.views.generic import CreateView, ListView, DetailView, UpdateView
 
 from field_target.accounts.models import UserProfile
-from field_target.competitions.forms import CompetitionForm, CompetitionRegistrationForm
+from field_target.competitions.forms import CompetitionForm, CompetitionRegistrationForm, CompetitionCreationForm, \
+    CompetitionEditForm
 from field_target.competitions.models import Competition, Registration
 
 
 # Create your views here.
-class CompetitionCreateView(CreateView):
+class CompetitionCreateView(LoginRequiredMixin, CreateView):
     model = Competition
-    form_class = CompetitionForm
+    form_class = CompetitionCreationForm
     template_name = 'competitions/competition-create.html'
     success_url = reverse_lazy('home')
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return HttpResponseForbidden("You are not authorized to create competitions.")
+
+        return super().dispatch(request, *args, **kwargs)
 
 class ShowAllCompetitionsView(ListView):
     model = Competition
     template_name = 'competitions/all-competitions.html'
     context_object_name = 'competitions'
     ordering = ['start_date']
+
+    def get_queryset(self):
+        today = timezone.now().date()
+        return Competition.objects.filter(end_date__gte=today).order_by('start_date')
 
 
 class CompetitionDetailView(DetailView):
@@ -42,9 +56,9 @@ class CompetitionDetailView(DetailView):
             context['is_registered'] = False
         return context
 
-class CompetitionRegisterView(CreateView):
+class CompetitionRegisterView(LoginRequiredMixin, CreateView):
     model = Registration
-    fields = ['accommodation']  # Only ask the user for accommodation if needed
+    fields = ['accommodation']
     template_name = 'competitions/competition-register.html'
 
     def get_context_data(self, **kwargs):
@@ -66,3 +80,13 @@ class CompetitionRegisterView(CreateView):
         return reverse_lazy('competition-details', kwargs={'pk': self.competition.pk})
 
 
+class CompetitionEditView(LoginRequiredMixin, UpdateView):
+    model = Competition
+    template_name = 'competitions/competition-edit.html'
+    form_class = CompetitionEditForm
+    success_url = reverse_lazy('all-competitions')
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_superuser and not request.user.has_perm('competitions.change_competition'):
+            return HttpResponseForbidden("You are not authorized to edit competitions.")
+
+        return super().dispatch(request, *args, **kwargs)

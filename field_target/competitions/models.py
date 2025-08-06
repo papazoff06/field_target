@@ -19,6 +19,8 @@ class Registration(models.Model):
     competition = models.ForeignKey(Competition, on_delete=models.CASCADE)
     accommodation = models.ForeignKey(Accommodation, on_delete=models.SET_NULL, null=True, blank=True)
     registered_at = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return f'{self.shooter} {self.competition} {self.accommodation}'
 
 class Announcement(models.Model):
     title = models.CharField(max_length=100)
