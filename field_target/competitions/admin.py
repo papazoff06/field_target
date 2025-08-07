@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from field_target.competitions.models import Competition, Registration, Announcement
+from field_target.competitions.models import Competition, Registration
 
 
 # Register your models here.
@@ -13,6 +13,3 @@ class CompetitionAdmin(admin.ModelAdmin):
 class RegistrationAdmin(admin.ModelAdmin):
     model = Registration
 
-@admin.register(Announcement)
-class AnnouncementAdmin(admin.ModelAdmin):
-    model = Announcement
