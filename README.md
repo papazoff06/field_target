@@ -25,7 +25,7 @@
 ---
 
 ## 🚀 Installation
-Windows (PowerShell):
+
 
 ### 1️⃣ Clone the repository
 ```
@@ -73,7 +73,7 @@ Access the site at http://127.0.0.1:8000/
 - API:
   - GET /api/competitions/ → List of competitions (public)
 
-  - GET /api/competitions/{id}/ → competition details
+  - GET /api/competitions/{id}/ → competition details (public)
 
   - POST /api/competitions/ → Create competition (admin only)
 
