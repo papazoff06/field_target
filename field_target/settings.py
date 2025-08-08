@@ -39,11 +39,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'rest_framework',
+
     'field_target.accounts',
     'field_target.competitions',
     'field_target.accommodation',
     'field_target.sponsors',
-    'field_target.common'
+    'field_target.common',
+
+
 ]
 
 MIDDLEWARE = [

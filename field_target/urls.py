@@ -20,6 +20,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/', include('field_target.competitions.api_urls')),
     path('', include('field_target.common.urls')),
     path('accounts/', include('field_target.accounts.urls')),
     path('competitions/', include('field_target.competitions.urls')),
