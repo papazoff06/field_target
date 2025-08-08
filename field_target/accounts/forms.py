@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 
 from .models import UserProfile
 
+
 class UserRegisterForm(forms.ModelForm):
     password1 = forms.CharField(
         label='Password',
@@ -13,7 +14,6 @@ class UserRegisterForm(forms.ModelForm):
         label='Confirm Password',
         widget=forms.PasswordInput
     )
-
 
     class Meta:
         model = User
@@ -42,7 +42,6 @@ class UserRegisterForm(forms.ModelForm):
         return user
 
 
-
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
@@ -52,6 +51,7 @@ class ProfileForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs.update({'class': 'form-control'})
+
 
 class UserEditForm(forms.ModelForm):
     class Meta:

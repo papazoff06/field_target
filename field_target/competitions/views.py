@@ -3,11 +3,10 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.utils import timezone
-from django.views.generic import CreateView, ListView, DetailView, UpdateView
+from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 
 from field_target.accounts.models import UserProfile
-from field_target.competitions.forms import CompetitionForm, CompetitionRegistrationForm, CompetitionCreationForm, \
-    CompetitionEditForm
+from field_target.competitions.forms import CompetitionCreationForm, CompetitionEditForm
 from field_target.competitions.models import Competition, Registration
 
 
@@ -23,6 +22,7 @@ class CompetitionCreateView(LoginRequiredMixin, CreateView):
             return HttpResponseForbidden("You are not authorized to create competitions.")
 
         return super().dispatch(request, *args, **kwargs)
+
 
 class ShowAllCompetitionsView(ListView):
     model = Competition
@@ -40,7 +40,6 @@ class CompetitionDetailView(DetailView):
     template_name = 'competitions/competition-details.html'
     context_object_name = 'competition'
 
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         competition = self.get_object()
@@ -55,6 +54,7 @@ class CompetitionDetailView(DetailView):
         else:
             context['is_registered'] = False
         return context
+
 
 class CompetitionRegisterView(LoginRequiredMixin, CreateView):
     model = Registration
@@ -85,8 +85,15 @@ class CompetitionEditView(LoginRequiredMixin, UpdateView):
     template_name = 'competitions/competition-edit.html'
     form_class = CompetitionEditForm
     success_url = reverse_lazy('all-competitions')
+
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_superuser and not request.user.has_perm('competitions.change_competition'):
             return HttpResponseForbidden("You are not authorized to edit competitions.")
 
         return super().dispatch(request, *args, **kwargs)
+
+
+class CompetitionDeleteView(LoginRequiredMixin, DeleteView):
+    model = Competition
+    template_name = 'competitions/competition-delete.html'
+    success_url = reverse_lazy('all-competitions')

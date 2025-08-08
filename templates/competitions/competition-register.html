@@ -1,15 +1,14 @@
-
 {% extends 'base.html' %}
 {% block content %}
-<div class="container mt-5">
-    <div class="card p-4 shadow-sm">
-        <h3 class="mb-4">Register for: {{ competition.name }}</h3>
-        <h2 class="mb-5">Choose a place to stay if you want!</h2>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">Register</button>
-        </form>
+    <div class="container mt-5">
+        <div class="card p-4 shadow-sm">
+            <h3 class="mb-4">Register for: {{ competition.name }}</h3>
+            <h2 class="mb-5">Choose a place to stay if you want!</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+        </div>
     </div>
-</div>
 {% endblock %}

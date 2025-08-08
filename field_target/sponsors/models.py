@@ -5,6 +5,7 @@ from django.db import models
 
 from field_target.competitions.models import Competition
 
+
 class Sponsor(models.Model):
     name = models.CharField(max_length=100)
     logo = models.ImageField(upload_to='sponsors/')

@@ -14,18 +14,12 @@ class Competition(models.Model):
     def __str__(self):
         return self.name
 
+
 class Registration(models.Model):
     shooter = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     competition = models.ForeignKey(Competition, on_delete=models.CASCADE)
     accommodation = models.ForeignKey(Accommodation, on_delete=models.SET_NULL, null=True, blank=True)
     registered_at = models.DateTimeField(auto_now_add=True)
-    def __str__(self):
-        return f'{self.shooter} {self.competition} {self.accommodation}'
 
-# class Announcement(models.Model):
-#     title = models.CharField(max_length=100)
-#     content = models.TextField()
-#     created_at = models.DateTimeField(auto_now_add=True)
-#
-#     def __str__(self):
-#         return self.title
+    def __str__(self):
+        return f'{self.shooter.user.first_name} {self.shooter.user.last_name} {self.competition}'

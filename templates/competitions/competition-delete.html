@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card shadow-lg border-0">
+                    <div class="card-header bg-danger text-white">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <h4 class="mb-0"><i class="bi bi-exclamation-triangle-fill me-2"></i>Confirm Delete</h4>
+                                <small class="text-light">This action cannot be undone</small>
+                            </div>
+                            <div>
+                                <span class="badge bg-dark">Competition</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <h5 class="card-title">{{ competition.name }}</h5>
+                        <p class="text-muted mb-1">
+                            <strong>Dates:</strong>
+                            {{ competition.start_date }} — {{ competition.end_date }}
+                        </p>
+                        <p class="text-muted mb-1"><strong>Location:</strong> {{ competition.location }}</p>
+
+                        <hr>
+
+                        <p class="mb-3">
+                            <strong>Description:</strong><br>
+                            {{ competition.description|linebreaksbr }}
+                        </p>
+
+                        <div class="alert alert-warning d-flex align-items-center" role="alert">
+                            <i class="bi bi-exclamation-circle-fill me-2"></i>
+                            <div>
+                                Are you sure you want to <strong>permanently delete</strong> this competition and all
+                                related registrations?
+                                This cannot be undone.
+                            </div>
+                        </div>
+
+                        <form method="post" class="d-flex gap-2">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-lg d-flex align-items-center">
+                                <i class="bi bi-trash-fill me-2"></i> Delete competition
+                            </button>
+
+                            <a href="{% url 'competition-details' competition.pk %}"
+                               class="btn btn-outline-secondary btn-lg d-flex align-items-center">
+                                <i class="bi bi-x-circle me-2"></i> Cancel
+                            </a>
+
+
+                        </form>
+
+                        <small class="d-block mt-3 text-muted">
+                            Only admins with delete permission can remove competitions. If you’re unsure, please contact
+                            an administrator.
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -3,12 +3,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LogoutView, LoginView
 from django.http import Http404
 from django.views import View
-from django.views.generic import  DeleteView
+from django.views.generic import DeleteView
 from field_target.accounts.forms import UserRegisterForm, ProfileForm, UserEditForm
 from field_target.accounts.models import UserProfile
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-
 
 
 class UserRegisterView(View):
@@ -41,17 +40,19 @@ class UserRegisterView(View):
 
         return render(request, 'accounts/register.html', context)
 
+
 class CustomLogoutView(LogoutView):
     success_url = reverse_lazy('home')
+
 
 class CustomLoginView(LoginView):
     template_name = 'accounts/login.html'
     success_url = reverse_lazy('home')
 
+
 class ProfileDetailsView(LoginRequiredMixin, View):
     model = UserProfile
     template_name = 'accounts/profile-details.html'
-
 
     def get(self, request):
         try:
@@ -99,6 +100,7 @@ class ProfileEditView(LoginRequiredMixin, View):
         }
         return render(request, self.template_name, context)
 
+
 class ProfileDeleteView(LoginRequiredMixin, DeleteView):
     model = UserProfile
     template_name = 'accounts/profile-delete.html'
@@ -115,8 +117,3 @@ class ProfileDeleteView(LoginRequiredMixin, DeleteView):
         user.delete()
 
         return redirect(self.success_url)
-
-
-
-
-
