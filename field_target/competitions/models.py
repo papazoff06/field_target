@@ -4,6 +4,7 @@ from field_target.accommodation.models import Accommodation
 from field_target.accounts.models import UserProfile
 
 
+
 class Competition(models.Model):
     name = models.CharField(max_length=100)
     start_date = models.DateField()
