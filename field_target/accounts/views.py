@@ -30,9 +30,10 @@ class UserRegisterView(View):
 
         if user_form.is_valid() and profile_form.is_valid():
             user = user_form.save()
+            profile = user.userprofile
 
-            profile = profile_form.save(commit=False)
-            profile.user = user
+            for field, value in profile_form.cleaned_data.items():
+                setattr(profile, field, value)
             profile.save()
 
             login(request, user)
