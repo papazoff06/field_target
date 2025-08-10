@@ -3,6 +3,7 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.utils import timezone
+from django.utils.timezone import now
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 
 from field_target.accounts.models import UserProfile
@@ -45,6 +46,8 @@ class CompetitionDetailView(DetailView):
         competition = self.get_object()
         user = self.request.user
         context['competitors'] = Registration.objects.filter(competition=competition)
+        context['today'] = now().date()
+        context['is_past'] = competition.end_date < context['today']
 
         if user.is_authenticated:
             context['is_registered'] = Registration.objects.filter(
@@ -97,3 +100,25 @@ class CompetitionDeleteView(LoginRequiredMixin, DeleteView):
     model = Competition
     template_name = 'competitions/competition-delete.html'
     success_url = reverse_lazy('all-competitions')
+
+class ShowPastCompetitionsView(ListView):
+    model = Competition
+    template_name = 'competitions/past-competitions.html'
+    context_object_name = 'competitions'
+    ordering = ['start_date']
+    def get_queryset(self):
+        today = timezone.now().date()
+        return Competition.objects.filter(end_date__lte=today).order_by('start_date')
+
+class PastCompetitionDetailView(DetailView):
+    model = Competition
+    template_name = 'competitions/competition-details.html'  # SAME template
+    context_object_name = 'competition'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        competition = self.get_object()
+        context['competitors'] = Registration.objects.filter(competition=competition)
+        context['today'] = now().date()
+        context['is_past'] = True  # Always past for this view
+        return context

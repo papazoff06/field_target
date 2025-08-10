@@ -1,12 +1,13 @@
 # Field Target App
 
 ## 📌 Description
-**Field Target** is a Django-based web application for managing shooting competitions, competitor registrations and sponsors.
+**This app** is a Django-based web application for 
+managing shooting competitions and competitor registrations. You can find more about Field Target like shooting sport
+[**here**](https://en.wikipedia.org/wiki/Field_target)
 
 ### Features
 - 🏆 Create, edit, and delete competitions
 - 👤 Competitor registration system
-- 💼 Sponsor management
 - 📅 Competition detail pages with participant lists
 - 🔒 Admin-only actions for sensitive operations
 - 🌐 Optional REST API for Competitions (read-only for public, POST for admins)
@@ -30,7 +31,7 @@
 ### 1️⃣ Clone the repository
 ```
 https://github.com/papazoff06/field_target.git
-cd field_targe
+cd field_target
 ```
 ### 2️⃣ Create & activate a virtual environment for Windows
 ```
@@ -71,7 +72,7 @@ Access the site at http://127.0.0.1:8000/
 - Sponsors: Manage via admin; displayed on competition pages.
 
 - API:
-  - GET /api/competitions/ → List of competitions (public)
+  - GET /api/competitions/ → List of all competitions (public)
 
   - GET /api/competitions/{id}/ → competition details (public)
 
@@ -91,11 +92,13 @@ Access the site at http://127.0.0.1:8000/
 - profile-details.html → See details about your profile
 - profile-edit.html → Edit data in your profile form
 - all-competitions.html → All competitions
-- competition-details.html → Competition details, registrations, sponsors
+- competition-details.html → Competition details, registrations, sponsors 
+for both 
 - competition-create.html → Create competition
 - competition-delete.html → Fancy delete confirmation
 - competition-edit.html → Edit competition
 - competition-register.html → Register for competition
+- past-competitions.html → Competitions that are expired
 - base.html → Site layout
 - home.html → Home page
 

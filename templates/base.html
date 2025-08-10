@@ -10,7 +10,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'home' %}">FT App</a>
+        <a class="navbar-brand" href="{% url 'home' %}">Home</a>
 
         <!-- Hamburger button for small screens -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -30,10 +30,14 @@
                     <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
                 {% endif %}
-                <li class="nav-item"><a class="nav-link" href="{% url 'all-competitions' %}">All competitions</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'all-competitions' %}">Upcoming competitions</a>
+                </li>
+
                 {% if user.is_superuser %}
-                    <li class="nav-item"><a class="nav-link" href="{% url 'competition-create' %}">Create competitions</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'competition-create' %}">Create
+                        competitions</a></li>
                 {% endif %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'competition-history' %}">History</a></li>
             </ul>
         </div>
     </div>
