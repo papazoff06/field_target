@@ -1,0 +1,58 @@
+footer {
+            background-color: #212529; /* Dark footer */
+            color: #ccc;
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+        footer a {
+            color: #f8f9fa;
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+        .footer-divider {
+            border-top: 1px solid #444;
+            margin: 20px 0;
+        }
+
+.home-background {
+        background: url("../images/background.jpg") no-repeat center center fixed;
+        background-size: cover;
+        padding: 5px;
+        border-radius: 10px;
+        min-height: 70vh;
+        color: white;
+        text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
+}
+
+/* Sponsor logo sizing */
+.sponsor-logo {
+    height: 40px;
+    max-width: 100%;
+}
+.sponsor-logo-lg {
+    height: 60px;
+    max-width: 100%;
+}
+
+/* Mobile adjustments */
+@media (max-width: 576px) {
+    .home-background {
+        padding: 10px;
+        min-height: 50vh;
+        text-align: center;
+    }
+    .home-background h1 {
+        font-size: 1.5rem;
+    }
+    .home-background p {
+        font-size: 1rem;
+    }
+    .sponsor-logo {
+        height: 30px;
+    }
+    .sponsor-logo-lg {
+        height: 40px;
+    }
+}

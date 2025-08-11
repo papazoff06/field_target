@@ -2,17 +2,10 @@
 {% load static %}
 
 {% block content %}
-    <style>
-    body {
-        background: url("{% static 'images/background.jpg' %}") no-repeat center center fixed;
-        background-size: cover;
-        min-height: 100vh;
-        color: white; /* text contrast */
-        text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
-    }
-</style>
-    
-<h1>Welcome to Field Target Bulgaria Championship competitions</h1>
-<p>This is a public landing page. View upcoming competitions or register to participate.  <a class="btn btn-primary" href="{% url 'all-competitions' %}">Upcoming competitions</a></p>
-
+<div class="home-background">
+    <h1 class="display-6 display-md-4">Welcome to Field Target Bulgaria Championship competitions</h1>
+    <p class="lead">
+        This is a public landing page. View upcoming competitions or register to participate.
+    </p>
+</div>
 {% endblock %}

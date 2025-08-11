@@ -1,47 +1,48 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    
-    <h2 class="mb-4">Upcoming competitions</h2>
+<h2 class="mb-4 text-center text-md-start">Upcoming competitions</h2>
 
-    {% if competitions %}
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            {% for comp in competitions %}
-                <div class="col">
-                    <div class="card h-100 shadow-sm">
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">{{ comp.name }}</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">
-                                {{ comp.start_date }} - {{ comp.end_date }}
-                            </h6>
+{% if competitions %}
+<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
+    {% for comp in competitions %}
+    <div class="col">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">{{ comp.name }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">
+                    {{ comp.start_date }} - {{ comp.end_date }}
+                </h6>
 
-                            <p class="card-text flex-grow-1">{{ comp.description|truncatechars:100 }}</p>
-                            <p class="card-text"><small class="text-muted">Place of
-                                competition: {{ comp.location|title }}</small></p>
-                            {% if comp.sponsor_set.exists %}
-                                <div class="mt-2">
-                                    <small class="text-muted">Sponsors:</small>
-                                    <div class="d-flex gap-2 flex-wrap mt-1">
-                                        {% for sponsor in comp.sponsor_set.all %}
-                                            <img src="{{ sponsor.logo.url }}" alt="{{ sponsor.name }}"
-                                                 style="height: 40px;" class="rounded">
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            {% endif %}
+                <p class="card-text flex-grow-1">{{ comp.description|truncatechars:100 }}</p>
+                <p class="card-text">
+                    <small class="text-muted">Place of competition: {{ comp.location|title }}</small>
+                </p>
 
-                            <div class="d-flex justify-content-between mt-auto gap-2">
-                                <a href="{% url 'competition-details' comp.pk %}"
-                                   class="btn btn-primary btn-sm flex-fill">
-                                    View Details
-                                </a>
-                            </div>
-                        </div>
+                {% if comp.sponsor_set.exists %}
+                <div class="mt-2">
+                    <small class="text-muted">Sponsors:</small>
+                    <div class="d-flex gap-2 flex-wrap mt-1">
+                        {% for sponsor in comp.sponsor_set.all %}
+                        <img src="{{ sponsor.logo.url }}" alt="{{ sponsor.name }}"
+                             class="img-fluid rounded sponsor-logo">
+                        {% endfor %}
                     </div>
                 </div>
-            {% endfor %}
+                {% endif %}
+
+                <div class="d-flex justify-content-between mt-auto gap-2">
+                    <a href="{% url 'competition-details' comp.pk %}"
+                       class="btn btn-primary btn-sm flex-fill">
+                        View Details
+                    </a>
+                </div>
+            </div>
         </div>
-    {% else %}
-        <p>No competitions available at the moment.</p>
-    {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p class="text-center">No competitions available at the moment.</p>
+{% endif %}
 {% endblock %}

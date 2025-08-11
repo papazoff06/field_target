@@ -14,53 +14,54 @@
             <p>{{ competition.description }}</p>
 
             {% if competition.sponsor_set.exists %}
-                <hr>
-                <h5 class="mt-4">Sponsored by:</h5>
-                <div class="d-flex flex-wrap gap-3">
-                    {% for sponsor in competition.sponsor_set.all %}
-                        <a href="{{ sponsor.website }}" target="_blank"
-                           class="p-2 bg-light border rounded shadow-sm text-center">
-                            <img src="{{ sponsor.logo.url }}" alt="{{ sponsor.name }}" style="height: 60px;">
-                        </a>
-                    {% endfor %}
-                </div>
+            <hr>
+            <h5 class="mt-4">Sponsored by:</h5>
+            <div class="d-flex flex-wrap gap-3">
+                {% for sponsor in competition.sponsor_set.all %}
+                <a href="{{ sponsor.website }}" target="_blank"
+                   class="p-2 bg-light border rounded shadow-sm text-center">
+                    <img src="{{ sponsor.logo.url }}" alt="{{ sponsor.name }}"
+                         class="img-fluid sponsor-logo-lg">
+                </a>
+                {% endfor %}
+            </div>
             {% endif %}
 
             <hr>
             <h4>Registered Competitors {{ competitors.count }}</h4>
             {% if competitors %}
-                <div class="table-responsive">
-                    <table class="table table-striped align-middle">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>#</th>
-                                <th>Name</th>
-                                <th>Shooter Class</th>
-                                <th>Rifle</th>
-                                <th>Scope</th>
-                                <th>Pellets</th>
-                                <th>Country</th>
-                                <th>Hotel</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for reg in competitors %}
-                                <tr>
-                                    <td>{{ forloop.counter }}</td>
-                                    <td>{{ reg.shooter.user.get_full_name }}</td>
-                                    <td>{{ reg.shooter.shooter_class }}</td>
-                                    <td>{{ reg.shooter.rifle }}</td>
-                                    <td>{{ reg.shooter.scope }}</td>
-                                    <td>{{ reg.shooter.pellets }}</td>
-                                    <td>{{ reg.shooter.country }}</td>
-                                    <td>{{ reg.accommodation }}</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+            <div class="table-responsive">
+                <table class="table table-striped align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Shooter Class</th>
+                            <th>Rifle</th>
+                            <th>Scope</th>
+                            <th>Pellets</th>
+                            <th>Country</th>
+                            <th>Hotel</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reg in competitors %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ reg.shooter.user.get_full_name }}</td>
+                            <td>{{ reg.shooter.shooter_class }}</td>
+                            <td>{{ reg.shooter.rifle }}</td>
+                            <td>{{ reg.shooter.scope }}</td>
+                            <td>{{ reg.shooter.pellets }}</td>
+                            <td>{{ reg.shooter.country }}</td>
+                            <td>{{ reg.accommodation }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
             {% else %}
-                <p>No competitors registered yet.</p>
+            <p>No competitors registered yet.</p>
             {% endif %}
         </div>
     </div>
