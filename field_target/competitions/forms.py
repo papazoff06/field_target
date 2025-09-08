@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import modelformset_factory
 from .models import Competition, Registration
 
 
@@ -37,3 +38,9 @@ class CompetitionRegistrationForm(forms.ModelForm):
         widgets = {
             'accommodation': forms.Select(attrs={'class': 'form-control'}),
         }
+
+class ScoreUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Registration
+        fields = ['first_day_score', 'second_day_score', 'tird_day_score']
+

@@ -1,15 +1,17 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.forms import modelformset_factory
 from django.http import HttpResponseForbidden
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.utils import timezone
+from django.utils import timezone, duration
 from django.utils.timezone import now
+from django.views import View
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 
 from field_target.accounts.models import UserProfile
-from field_target.competitions.forms import CompetitionCreationForm, CompetitionEditForm
+from field_target.competitions.forms import CompetitionCreationForm, CompetitionEditForm, ScoreUpdateForm
 from field_target.competitions.models import Competition, Registration
-
+from django.db.models import F
 
 # Create your views here.
 class CompetitionCreateView(LoginRequiredMixin, CreateView):
@@ -41,13 +43,18 @@ class CompetitionDetailView(DetailView):
     template_name = 'competitions/competition-details.html'
     context_object_name = 'competition'
 
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         competition = self.get_object()
         user = self.request.user
-        context['competitors'] = Registration.objects.filter(competition=competition)
+        competitors = Registration.objects.filter(competition=competition).annotate(
+            annotated_total_score=F('first_day_score') + F('second_day_score') + F('tird_day_score')
+        ).order_by('-annotated_total_score')
+        context['competitors'] = competitors
         context['today'] = now().date()
         context['is_past'] = competition.end_date < context['today']
+        context['competition_days'] = competition.end_date - competition.start_date
 
         if user.is_authenticated:
             context['is_registered'] = Registration.objects.filter(
@@ -56,6 +63,7 @@ class CompetitionDetailView(DetailView):
             ).exists()
         else:
             context['is_registered'] = False
+
         return context
 
 
@@ -122,3 +130,45 @@ class PastCompetitionDetailView(DetailView):
         context['today'] = now().date()
         context['is_past'] = True  # Always past for this view
         return context
+
+class UpdateScoresView(LoginRequiredMixin, UserPassesTestMixin, View):
+    template_name = 'competitions/update-score.html'
+    form_class = ScoreUpdateForm
+
+    def test_func(self):
+        # Only staff users can access
+        return self.request.user.is_staff
+
+    def get_competition(self, competition_id):
+        return get_object_or_404(Competition, pk=competition_id)
+
+    def get(self, request, competition_id):
+        competition = self.get_competition(competition_id)
+        registrations = Registration.objects.filter(competition=competition).select_related('shooter__user')
+        ScoreFormSet = modelformset_factory(Registration, form=self.form_class, extra=0)
+        formset = ScoreFormSet(queryset=registrations)
+        competition_days = competition.end_date - competition.start_date
+        return render(request, self.template_name, {
+            'formset': formset,
+            'competition': competition,
+            'competition_days': competition_days,
+        })
+
+    def post(self, request, competition_id):
+        competition = self.get_competition(competition_id)
+        registrations = Registration.objects.filter(competition=competition)
+        ScoreFormSet = modelformset_factory(Registration, form=self.form_class, extra=0)
+        formset = ScoreFormSet(request.POST, queryset=registrations)
+
+
+        if formset.is_valid():
+            formset.save()
+            return redirect('competition-details', pk=competition_id)
+
+        competition_days = competition.end_date - competition.start_date
+        print(competition_days)
+        return render(request, self.template_name, {
+            'formset': formset,
+            'competition': competition,
+            'competition_days': competition_days
+        })

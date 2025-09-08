@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
 
@@ -13,6 +14,7 @@ class UserProfile(models.Model):
     scope = models.CharField(max_length=100)
     pellets = models.CharField(max_length=100)
     country = models.CharField(max_length=100)
+
 
     def __str__(self):
         return self.user.username

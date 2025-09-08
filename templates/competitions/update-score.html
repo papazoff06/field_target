@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container my-5">
+        <h2>Update Scores for {{ competition.name }}</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ formset.management_form }}
+            {% if formset.non_form_errors %}
+                <div class="alert alert-danger">
+                    {% for error in formset.non_form_errors %}
+                        <div>{{ error }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Competitor</th>
+                        <th>Day 1 Score</th>
+                        <th>Day 2 Score</th>
+                        {% if competition_days.days >= 3 %}
+                        <th>Day 3 Score</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+
+                <tbody>
+                {% for form in formset %}
+                    <tr>
+                        {{ form.id }} {# Hidden ID field required for formset #}
+                        <td>{{ form.instance.shooter.user.get_full_name }}</td>
+
+                        {# Day 1 Score #}
+                        <td>
+                            {{ form.first_day_score }}
+                            {% for error in form.first_day_score.errors %}
+                                <div class="text-danger small">{{ error }}</div>
+                            {% endfor %}
+                        </td>
+
+                        {# Day 2 Score #}
+                        <td>
+                            {{ form.second_day_score }}
+                            {% for error in form.second_day_score.errors %}
+                                <div class="text-danger small">{{ error }}</div>
+                            {% endfor %}
+                        </td>
+
+                        {# Day 3 Score — only if competition is 3 or more days #}
+                        {% if competition_days.days >= 3 %}
+                            <td>
+                                {{ form.tird_day_score }}
+                                {% for error in form.tird_day_score.errors %}
+                                    <div class="text-danger small">{{ error }}</div>
+                                {% endfor %}
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+
+            </table>
+
+            <button type="submit" class="btn btn-primary">Save Scores</button>
+        </form>
+
+    </div>
+{% endblock %}

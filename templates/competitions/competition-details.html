@@ -42,6 +42,16 @@
                             <th>Pellets</th>
                             <th>Country</th>
                             <th>Hotel</th>
+                            {% if competition_days.days > 2 %}
+                                <th>Day 1 score</th>
+                                <th>Day 2 score</th>
+                                <th>Day 3 score</th>
+                            {% else %}
+                                <th>Day 1 score</th>
+                                <th>Day 2 score</th>
+                            {% endif %}
+                            <th>Total score</th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -55,6 +65,15 @@
                             <td>{{ reg.shooter.pellets }}</td>
                             <td>{{ reg.shooter.country }}</td>
                             <td>{{ reg.accommodation }}</td>
+                            {% if competition_days.days > 2 %}
+                                <td>{{ reg.first_day_score }}</td>
+                                <td>{{ reg.second_day_score }}</td>
+                                <td>{{ reg.tird_day_score }}</td>
+                            {% else %}
+                                <td>{{ reg.first_day_score }}</td>
+                                <td>{{ reg.second_day_score }}</td>
+                            {% endif %}
+                                <td>{{ reg.annotated_total_score }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -97,6 +116,11 @@
                 <a href="{% url 'competition-delete' competition.pk %}" class="btn btn-danger">
                     <i class="bi bi-trash"></i> Delete
                 </a>
+            {% endif %}
+                    {% if user.is_staff %}
+                    <a href="{% url 'update-scores' competition.pk %}" class="btn btn-outline-info">
+                        <i class="bi bi-pencil-square"></i> Update Scores
+                    </a>
             {% endif %}
         </div>
     </div>

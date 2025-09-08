@@ -45,7 +45,7 @@ class UserRegisterForm(forms.ModelForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        exclude = ['user']
+        exclude = ['user',]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
