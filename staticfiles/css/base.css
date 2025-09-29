@@ -1,7 +1,7 @@
 footer {
             background-color: #212529; /* Dark footer */
             color: #ccc;
-            padding: 20px 0;
+            padding: 20px 5px;
             margin-top: 40px;
         }
         footer a {
@@ -14,8 +14,12 @@ footer {
         .footer-divider {
             border-top: 1px solid #444;
             margin: 20px 0;
+
         }
 
+.text-center {
+    padding: 1.5em;
+}
 .home-background {
         background: url("../images/background.jpg") no-repeat center center fixed;
         background-size: cover;
@@ -24,6 +28,13 @@ footer {
         min-height: 70vh;
         color: white;
         text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
+}
+
+.container{
+        padding-bottom: 2em;
+    }
+.card{
+    padding-bottom: 2em;
 }
 
 /* Sponsor logo sizing */
