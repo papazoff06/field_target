@@ -32,8 +32,9 @@ pipeline {
                 if (Test-Path requirements.txt) { pip install -r requirements.txt }
 
                 # Run linter
-                flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-                flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+                flake8 . --exclude=${VENV_DIR},.git,__pycache__ --count --select=E9,F63,F7,F82 --show-source --statistics; if ($LASTEXITCODE -ne 0) { Write-Host "flake8 errors detected" }
+                flake8 . --exclude=${VENV_DIR},.git,__pycache__ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
 
                 # Run tests
                 pytest
