@@ -3,11 +3,14 @@ from django.db import models
 
 from field_target.accommodation.models import Accommodation
 from field_target.accounts.models import UserProfile
-
+from field_target.competitions.validators import validate_competition_name
 
 
 class Competition(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(
+        max_length=100,
+    validators=[validate_competition_name],
+    )
     start_date = models.DateField()
     end_date = models.DateField()
     location = models.CharField(max_length=200)
