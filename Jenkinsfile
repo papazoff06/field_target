@@ -15,30 +15,15 @@ pipeline {
         stage('Setup, Install & Test') {
             steps {
                 powershell """
-                # Allow script execution for the venv activation
-                Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
+                    . ${VENV_DIR}\\Scripts\\Activate.ps1
 
-                # Create virtual environment
-                if (!(Test-Path ${VENV_DIR})) {
-                    python -m venv ${VENV_DIR}
-                }
+                    flake8 . --exclude=${VENV_DIR},.git,__pycache__ --count --select=E9,F63,F7,F82 --show-source --statistics
+                    if (\$LASTEXITCODE -ne 0) { Write-Host "flake8 strict errors detected (this will not stop build)" }
 
-                # Activate venv
-                & ${VENV_DIR}\\Scripts\\Activate.ps1
+                    flake8 . --exclude=${VENV_DIR},.git,__pycache__ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+                    pytest
+"""
 
-                # Upgrade pip and install dependencies
-                pip install --upgrade pip
-                pip install flake8 pytest
-                if (Test-Path requirements.txt) { pip install -r requirements.txt }
-
-                # Run linter
-                flake8 . --exclude=${VENV_DIR},.git,__pycache__ --count --select=E9,F63,F7,F82 --show-source --statistics; if ($LASTEXITCODE -ne 0) { Write-Host "flake8 errors detected" }
-                flake8 . --exclude=${VENV_DIR},.git,__pycache__ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-
-
-                # Run tests
-                pytest
-                """
             }
         }
     }
