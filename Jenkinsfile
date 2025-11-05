@@ -3,6 +3,8 @@ pipeline {
 
     environment {
         VENV_DIR = "venv"
+        SECRET_KEY = "dummy-secret-for-ci"   // avoid decouple error
+        DEBUG = "0"
     }
 
     stages {
@@ -15,15 +17,22 @@ pipeline {
         stage('Setup, Install & Test') {
             steps {
                 powershell """
-                    . ${VENV_DIR}\\Scripts\\Activate.ps1
+                Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
 
-                    flake8 . --exclude=${VENV_DIR},.git,__pycache__ --count --select=E9,F63,F7,F82 --show-source --statistics
-                    if (\$LASTEXITCODE -ne 0) { Write-Host "flake8 strict errors detected (this will not stop build)" }
+                # Create virtual environment
+                if (!(Test-Path ${env.VENV_DIR})) {
+                    python -m venv ${env.VENV_DIR}
+                }
 
-                    flake8 . --exclude=${VENV_DIR},.git,__pycache__ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-                    pytest
-"""
+                # Activate venv
+                & ${env.VENV_DIR}\\Scripts\\Activate.ps1
 
+                pip install --upgrade pip
+                pip install -r requirements.txt
+
+                # Run Django tests
+                python manage.py test
+                """
             }
         }
     }
