@@ -14,7 +14,7 @@ from pathlib import Path
 
 from decouple import config, Csv
 from django.urls import reverse_lazy
-
+import dj_database_url
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -28,18 +28,14 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", default=False, cast=bool)
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.onrender.com']
 
-import os
-from decouple import config
 
-csrf_origins = os.getenv("CSRF_TRUSTED_ORIGINS", config("CSRF_TRUSTED_ORIGINS", ""))
-
-if isinstance(csrf_origins, str):
-    CSRF_TRUSTED_ORIGINS = [o for o in csrf_origins.split(",") if o]
-else:
-    CSRF_TRUSTED_ORIGINS = csrf_origins
-
+CSRF_TRUSTED_ORIGINS = config(
+    "CSRF_TRUSTED_ORIGINS",
+    default="",
+    cast=Csv()
+)
 # Application definition
 
 INSTALLED_APPS = [
@@ -102,15 +98,23 @@ WSGI_APPLICATION = 'field_target.wsgi.application'
 #     }
 # }
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         'NAME': config('DB_NAME'),
+#         'USER': config('DB_USER'),
+#         'PASSWORD': config('DB_PASSWORD', default='your_fallback_password'),
+#         "HOST": config('DB_HOST'),
+#         "PORT": config('DB_PORT'),
+#     }
+# }
+
+
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD', default='your_fallback_password'),
-        "HOST": config('DB_HOST'),
-        "PORT": config('DB_PORT'),
-    }
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL')
+    )
 }
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
