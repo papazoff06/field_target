@@ -98,6 +98,8 @@ WSGI_APPLICATION = 'field_target.wsgi.application'
 #     }
 # }
 
+
+#works for development environment
 # DATABASES = {
 #     "default": {
 #         "ENGINE": "django.db.backends.postgresql",
@@ -110,12 +112,39 @@ WSGI_APPLICATION = 'field_target.wsgi.application'
 # }
 
 
+#works for deployed on render.com
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default=os.environ.get('DATABASE_URL')
+#     )
+# }
+
+# DATABASE_URL = os.getenv("DATABASE_URL")
+#
+# if DATABASE_URL:
+#     # Render (and any production)
+#     DATABASES = {
+#         'default': dj_database_url.parse(DATABASE_URL)
+#     }
+# else:
+#     # Local development fallback (PostgreSQL)
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql',
+#             'NAME': 'field_target',
+#             'USER': 'postgres',
+#             'PASSWORD': 'your_local_password',
+#             'HOST': 'localhost',
+#             'PORT': '5432',
+#         }
+#     }
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL')
+    "default": dj_database_url.config(
+        default=config("DATABASE_URL")
     )
 }
+
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
