@@ -15,9 +15,7 @@ from pathlib import Path
 from decouple import config, Csv
 from django.urls import reverse_lazy
 import dj_database_url
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -41,15 +39,16 @@ CSRF_TRUSTED_ORIGINS = config(
 )
 # Application definition
 
-INSTALLED_APPS = [
+IINSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'cloudinary',
-    'cloudinary_storage',
     'django.contrib.staticfiles',
+
+    'cloudinary_storage',
+    'cloudinary',
 
     'rest_framework',
 
@@ -58,8 +57,6 @@ INSTALLED_APPS = [
     'field_target.accommodation',
     'field_target.sponsors',
     'field_target.common',
-
-
 ]
 
 MIDDLEWARE = [
@@ -205,7 +202,8 @@ STORAGES = {
     },
 }
 
-
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 
 # MEDIA_URL = '/media/'
 # MEDIA_ROOT = BASE_DIR / 'media'
