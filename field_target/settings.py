@@ -39,7 +39,7 @@ CSRF_TRUSTED_ORIGINS = config(
 )
 # Application definition
 
-IINSTALLED_APPS = [
+INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
