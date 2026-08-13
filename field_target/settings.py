@@ -27,22 +27,32 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config("DEBUG", default=False, cast=bool)
-
-ALLOWED_HOSTS = [
-    '127.0.0.1',
-    'localhost',
-    '.onrender.com',
-    'fieldtarget.up.railway.app',
-]
 
 
-CSRF_TRUSTED_ORIGINS = config(
-    "CSRF_TRUSTED_ORIGINS",
-    default="",
-    cast=Csv()
-)
+
+
+# DEBUG = config("DEBUG", default=False, cast=bool)
+
+# ALLOWED_HOSTS = [
+#     '127.0.0.1',
+#     'localhost',
+#     '.onrender.com',
+#     'fieldtarget.up.railway.app',
+# ]
+
+
+
+DEBUG = True
+ALLOWED_HOSTS = ['*']
+
+
+# CSRF_TRUSTED_ORIGINS = config(
+#     "CSRF_TRUSTED_ORIGINS",
+#     default="",
+#     cast=Csv()
+# )
 # Application definition
+CSRF_TRUSTED_ORIGINS = ['https://fieldtarget.up.railway.app']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
