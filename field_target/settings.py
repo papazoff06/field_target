@@ -33,17 +33,17 @@ SECRET_KEY = config('SECRET_KEY')
 
 # DEBUG = config("DEBUG", default=False, cast=bool)
 
-# ALLOWED_HOSTS = [
-#     '127.0.0.1',
-#     'localhost',
-#     '.onrender.com',
-#     'fieldtarget.up.railway.app',
-# ]
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
+    '.onrender.com',
+    'fieldtarget.up.railway.app',
+]
 
 
 
-DEBUG = True
-ALLOWED_HOSTS = ['*']
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+
 
 
 # CSRF_TRUSTED_ORIGINS = config(
