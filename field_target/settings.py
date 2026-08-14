@@ -175,12 +175,12 @@ WSGI_APPLICATION = 'field_target.wsgi.application'
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
 if DATABASE_URL:
-    # Конфигурация за Railway (Production)
+    # Използваме parse() директно, което отваря и затваря връзките бързо и без блокиране
     DATABASES = {
         'default': dj_database_url.parse(DATABASE_URL)
     }
 else:
-    # Конфигурация за вашето локално разработване (PostgreSQL)
+    # Вашата локална PostgreSQL конфигурация за компютъра
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
@@ -191,7 +191,6 @@ else:
             "PORT": config('DB_PORT', default='5432'),
         }
     }
-
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
