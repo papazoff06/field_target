@@ -33,17 +33,31 @@ SECRET_KEY = config('SECRET_KEY')
 
 # DEBUG = config("DEBUG", default=False, cast=bool)
 
-ALLOWED_HOSTS = [
-    '127.0.0.1',
-    'localhost',
-    '.onrender.com',
-    'fieldtarget.up.railway.app',
-]
+# ALLOWED_HOSTS = [
+#     '127.0.0.1',
+#     'localhost',
+#     '.onrender.com',
+#     'fieldtarget.up.railway.app',
+# ]
+#
+#
+#
+# DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
+# 1. Дефинирайте DEBUG най-горе чрез decouple
+DEBUG = config("DEBUG", default=False, cast=bool)
 
-
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'
-
+# 2. След това дефинирайте ALLOWED_HOSTS
+if DEBUG:
+    # Когато разработвате или дебъгвате, разрешете всички хостове
+    ALLOWED_HOSTS = ['*']
+else:
+    # В реален production режим използвайте конкретните домейни
+    ALLOWED_HOSTS = [
+        '127.0.0.1',
+        'localhost',
+        'fieldtarget.up.railway.app',
+    ]
 
 
 # CSRF_TRUSTED_ORIGINS = config(
