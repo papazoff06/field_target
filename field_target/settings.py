@@ -172,11 +172,25 @@ WSGI_APPLICATION = 'field_target.wsgi.application'
 #         }
 #     }
 
-DATABASES = {
-    "default": dj_database_url.config(
-        default=config("DATABASE_URL")
-    )
-}
+DATABASE_URL = os.environ.get("DATABASE_URL")
+
+if DATABASE_URL:
+    # Конфигурация за Railway (Production)
+    DATABASES = {
+        'default': dj_database_url.parse(DATABASE_URL)
+    }
+else:
+    # Конфигурация за вашето локално разработване (PostgreSQL)
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            'NAME': config('DB_NAME', default='field_target'),
+            'USER': config('DB_USER', default='postgres'),
+            'PASSWORD': config('DB_PASSWORD', default='your_local_password'),
+            "HOST": config('DB_HOST', default='localhost'),
+            "PORT": config('DB_PORT', default='5432'),
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
