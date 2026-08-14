@@ -29,11 +29,4 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-from django.contrib.auth import get_user_model
-User = get_user_model()
-try:
-    # Това ще създаде потребител с име 'admin1' и парола 'Admin1234!'
-    if not User.objects.filter(username='admin1').exists():
-        User.objects.create_superuser('admin', 'admin@abv.bg', '12adminov34')
-except Exception:
-    pass
+
