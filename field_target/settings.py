@@ -253,3 +253,13 @@ cloudinary.config(
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGOUT_REDIRECT_URL = reverse_lazy('home')
 LOGIN_REDIRECT_URL = reverse_lazy('home')
+
+# Казва на Django, че е зад прокси и да разпознава HTTPS правилно
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Задължителни настройки за сигурност на бисквитките в Production
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+# Позволява на Django да пренасочва правилно след вход
+SECURE_SSL_REDIRECT = False
