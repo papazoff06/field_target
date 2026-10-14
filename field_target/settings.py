@@ -26,25 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
 
-
-
-
-# DEBUG = config("DEBUG", default=False, cast=bool)
-
-# ALLOWED_HOSTS = [
-#     '127.0.0.1',
-#     'localhost',
-#     '.onrender.com',
-#     'fieldtarget.up.railway.app',
-# ]
-#
-#
-#
-# DEBUG = os.environ.get('DEBUG', 'False') == 'True'
-
-# 1. Дефинирайте DEBUG най-горе чрез decouple
 DEBUG = config("DEBUG", default=False, cast=bool)
 
 # 2. След това дефинирайте ALLOWED_HOSTS
@@ -60,12 +42,7 @@ else:
     ]
 
 
-# CSRF_TRUSTED_ORIGINS = config(
-#     "CSRF_TRUSTED_ORIGINS",
-#     default="",
-#     cast=Csv()
-# )
-# Application definition
+
 CSRF_TRUSTED_ORIGINS = ['https://fieldtarget.up.railway.app']
 
 INSTALLED_APPS = [
@@ -121,66 +98,12 @@ TEMPLATES = [
 WSGI_APPLICATION = 'field_target.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-
-#works for development environment
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         'NAME': config('DB_NAME'),
-#         'USER': config('DB_USER'),
-#         'PASSWORD': config('DB_PASSWORD', default='your_fallback_password'),
-#         "HOST": config('DB_HOST'),
-#         "PORT": config('DB_PORT'),
-#     }
-# }
-
-
-#works for deployed on render.com
-# DATABASES = {
-#     'default': dj_database_url.config(
-#         default=os.environ.get('DATABASE_URL')
-#     )
-# }
-
-# DATABASE_URL = os.getenv("DATABASE_URL")
-#
-# if DATABASE_URL:
-#     # Render (and any production)
-#     DATABASES = {
-#         'default': dj_database_url.parse(DATABASE_URL)
-#     }
-# else:
-#     # Local development fallback (PostgreSQL)
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.postgresql',
-#             'NAME': 'field_target',
-#             'USER': 'postgres',
-#             'PASSWORD': 'your_local_password',
-#             'HOST': 'localhost',
-#             'PORT': '5432',
-#         }
-#     }
-
-DATABASE_URL = os.environ.get("DATABASE_URL")
-
-if DATABASE_URL:
-    # Използваме parse() директно, което отваря и затваря връзките бързо и без блокиране
+if os.environ.get('DATABASE_URL'):
     DATABASES = {
-        'default': dj_database_url.parse(DATABASE_URL)
+        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
     }
 else:
-    # Вашата локална PostgreSQL конфигурация за компютъра
+    # Локална конфигурация за вашия компютър
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
@@ -274,5 +197,5 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
-# Позволява на Django да пренасочва правилно след вход
-SECURE_SSL_REDIRECT = False
+# Автоматично пренасочване към HTTPS само в Production режим
+SECURE_SSL_REDIRECT = not DEBUG
