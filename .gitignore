@@ -1,12 +1,19 @@
-# Python
+
+.idea/
+.idea_old/
+.ai/
+.venv/
+*.pyc
 __pycache__/
+db.sqlite3
+# Python
+
 *.py[cod]
 *.sqlite3
 
 # Django
 *.log
-db.sqlite3
-*.pyc
+
 .env
 *.pem
 *.key

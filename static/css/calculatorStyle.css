@@ -1,0 +1,174 @@
+/* Нулиране на основни стилове и задаване на шрифт */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Фон на цялата страница с модерен градиент */
+body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    padding: 2rem;
+    color: #333;
+}
+
+/* Стил за заглавната част */
+header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+header p {
+    color: #7f8c8d;
+    font-size: 1.1rem;
+}
+
+/* Контейнер за калкулаторите - използва Grid за адаптивност (2х2 на големи екрани) */
+.calculators-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Стил за всяка отделна карта (калкулатор) */
+.calc-card {
+    background: #ffffff;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Ефект при посочване с мишката */
+.calc-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Икона/Емоджи за визуален акцент */
+.calc-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.calc-card h2 {
+    font-size: 1.3rem;
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 0.5rem;
+}
+
+/* Групиране на етикетите и входните полета */
+.input-group {
+    margin-bottom: 1.2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #7f8c8d;
+    margin-bottom: 0.4rem;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #dcdde1;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+/* Акцент върху полето при клик */
+.input-group input:focus {
+    border-color: #3498db;
+}
+
+/* Стилизиране на полето за резултат (да изглежда различно и защитено) */
+.input-group input[readonly] {
+    background-color: #f8f9fa;
+    border-color: #e2e8f0;
+    color: #27ae60;
+    font-weight: bold;
+    cursor: not-allowed;
+}
+
+/* Стил за бутона "Изчисли" */
+button {
+    background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+    color: white;
+    border: none;
+    padding: 0.9rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: auto; /* Поставя бутона винаги най-долу в картата */
+    transition: background 0.3s ease, opacity 0.3s ease;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+/* --- Нови стилове за бутона "Начална страница" --- */
+
+/* Контейнер за позициониране */
+.nav-bar {
+    max-width: 1200px;
+    margin: 0 auto 1.5rem auto;
+    display: flex;
+    justify-content: flex-start;
+}
+
+/* Стил на самия бутон линк */
+.btn-home {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px; /* Разстояние между иконата и текста */
+    background-color: #ffffff;
+    color: #2c3e50;
+    text-decoration: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 30px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    border: 1px solid #e2e8f0;
+}
+
+/* Ховър ефект при посочване */
+.btn-home:hover {
+    background-color: #2c3e50;
+    color: #ffffff;
+    transform: translateX(-3px); /* Леко движение наляво за визуален ефект */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Стил за SVG иконата къщичка */
+.btn-home svg {
+    transition: stroke 0.3s ease;
+}
