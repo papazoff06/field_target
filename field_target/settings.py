@@ -198,4 +198,4 @@ SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
 # Автоматично пренасочване към HTTPS само в Production режим
-SECURE_SSL_REDIRECT = not DEBUG
+SECURE_SSL_REDIRECT = False
