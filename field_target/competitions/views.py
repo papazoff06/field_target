@@ -33,9 +33,11 @@ class ShowAllCompetitionsView(ListView):
     context_object_name = 'competitions'
     ordering = ['start_date']
 
+
     def get_queryset(self):
         today = timezone.now().date()
         return Competition.objects.filter(end_date__gte=today).order_by('start_date')
+
 
 
 class CompetitionDetailView(DetailView):
