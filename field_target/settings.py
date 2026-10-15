@@ -45,18 +45,14 @@ else:
 
 CSRF_TRUSTED_ORIGINS = ['https://fieldtarget.up.railway.app']
 INSTALLED_APPS = [
-    # 1. Поставете Cloudinary най-отгоре (задължително над contrib.staticfiles)
-    'cloudinary_storage',
-
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-
-    # 2. Сега вече идва staticfiles
     'django.contrib.staticfiles',
 
+    'cloudinary_storage',
     'cloudinary',
     'rest_framework',
 
